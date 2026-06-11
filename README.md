@@ -14,9 +14,10 @@ This is a VR music game. Players will take on the role of a "Bard" who commands 
 * Arduino IDE (ESP32 核心库)
 * Unity 2022.3.62f3
 
-## 分工
+## ddl
 * ddl 是 6/22 前。但我的设想是在 6/17 前基本上完成大部分，后面 6/17-6/22 这 5 天就是反复调试，6/22-6/23 这两天布展。
 
+## 分工
 * *游戏基础框架和故事背景*: Audrey Wong, Cathy Jiao, Elaine Yang, Liz Sun, Maksim Grujic
 * *codes*: Neegia、若水、Chris、Nathan；Maksim（以及离开了，但写了一部分代码和游戏背景框架）
 * *美术*: 
