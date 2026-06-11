@@ -33,7 +33,7 @@ This is a VR music game. Players will take on the role of a "Bard" who commands 
   - wireframe：Cerebrum、Liz
   - 高保真：Liz、Yuhan、Elaine
 * *组织与沟通*：Cerebrum、Audrey
-* *Instagram账号发布*(@BARD.0205)：Liz
+* *Instagram账号发布 (@BARD.0205)*：Liz
 * *周边*: Liz
 * *背景音乐免费音源查找+sound effects*：Elaine、Liz、Maksim
-* *玩游戏时的音乐（神秘矿物质 echo）*：目前两位音乐人还未回复，需要我们自己去找 1 首版权音乐.
+* *玩游戏时的音乐（神秘矿物质 echo）*：目前两位音乐人还未回复，需要我们自己去找 1 首版权音乐。
