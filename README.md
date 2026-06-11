@@ -10,6 +10,6 @@ This is a VR music game. Players will take on the role of a "Bard" who commands 
 * *Dialogue/*:
    * *Dialogue link/*: 角色对话及界面交互的描述。[Final Dialogue Version](https://docs.google.com/document/d/1jHsj3Pt2pkJaY0Qb6nrEn8QQ2yDCGF_v0scNQyK_gT8/edit?usp=sharing)
 
-## 运行环境
+## Runtime Environment
 * Arduino IDE (ESP32 核心库)
 * Unity 2022.3.62f3
