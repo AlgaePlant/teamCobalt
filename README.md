@@ -9,7 +9,6 @@ This is a VR music game. Players will take on the role of a "Bard" who commands 
 * *teamCobalt/*：Stores all the assets of this game. [teamCobalt group Drive](https://drive.google.com/drive/folders/1yOq3qJV-no6fXi57-V8RxlNnkDmcb35e?usp=drive_link)
 * *Dialogue/*:
    * *Dialogue link/*: 角色对话及界面交互的描述。[Final Dialogue Version](https://docs.google.com/document/d/1jHsj3Pt2pkJaY0Qb6nrEn8QQ2yDCGF_v0scNQyK_gT8/edit?usp=sharing)
-   * *Dialogue codes/*: 之前那位离开项目的技术小伙伴 (Maksim)写的角色对话的codes在 GitHub → teamCobalt → Unity codes → Dialogue
 
 ## 运行环境
 * Arduino IDE (ESP32 核心库)
