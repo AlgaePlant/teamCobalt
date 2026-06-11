@@ -25,10 +25,13 @@ This is a VR music game. Players will take on the role of a "Bard" who commands 
    - icons：Yuhan、Elaine、Liz
 * *硬件 controller 调试*: Audrey、Cerebrum
 * 硬件 VR头显 调试*: Audrey、Cerebrum
-* *玩法*: 这个是大家一起讨论出来的。
+* *Gameplay*: 大家一起讨论出来的。
+   - Core Mechanisims
+   - 互动与反馈
 * *playtest*：Cerebrum、Audrey
-* *wireframe*：Cerebrum、Liz
-* *高保真*：Liz、Yuhan、Elaine
+* *交互细节*:
+  - wireframe：Cerebrum、Liz
+  - 高保真：Liz、Yuhan、Elaine
 * *组织与沟通*：Cerebrum、Audrey
 * *Instagram账号发布*(@BARD.0205)：Liz
 * *周边*: Liz
