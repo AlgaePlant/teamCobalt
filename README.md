@@ -13,3 +13,23 @@ This is a VR music game. Players will take on the role of a "Bard" who commands 
 ## Runtime Environment
 * Arduino IDE (ESP32 核心库)
 * Unity 2022.3.62f3
+
+## 分工
+* ddl 是 6/22 前。但我的设想是在 6/17 前基本上完成大部分，后面 6/17-6/22 这 5 天就是反复调试，6/22-6/23 这两天布展。
+
+* *游戏基础框架和故事背景/*: Audrey Wong, Cathy Jiao, Elaine Yang, Liz Sun, Maksim Grujic
+* *codes/*: Neegia、若水、Chris、Nathan；Maksim（以及离开了，但写了一部分代码和游戏背景框架）
+* *美术/*: 
+   - 角色设计： Liz、Audrey
+   - icons：Yuhan、Elaine、Liz
+* *硬件 controller 调试/*: Audrey、Cerebrum
+* 硬件 VR头显 调试/*: Audrey、Cerebrum
+* *玩法/*: 这个是大家一起讨论出来的。
+* *playtest/*：Cerebrum、Audrey
+* *wireframe/*：Cerebrum、Liz
+* *高保真/*：Liz、Yuhan、Elaine
+* *组织与沟通/*：Cerebrum、Audrey
+* *Instagram/*：账号发布：Liz
+* *周边/*: Liz
+* *背景音乐免费音源查找+sound effects/*：Elaine、Liz、Maksim
+* *玩游戏时的音乐（神秘矿物质 echo）/*：目前两位音乐人还未回复，需要我们自己去找 1 首版权音乐.
