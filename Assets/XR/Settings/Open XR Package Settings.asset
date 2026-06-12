@@ -369,10 +369,10 @@ MonoBehaviour:
   m_Name: ARCameraFeature Android
   m_EditorClassIdentifier: 
   m_enabled: 1
-  nameUi: 'AR Foundation: Meta Quest Camera'
+  nameUi: 'Meta Quest: AR Camera (Passthrough)'
   version: 0.1.0
   featureIdInternal: com.unity.openxr.feature.arfoundation-meta-camera
-  openxrExtensionStrings: XR_FB_passthrough XR_FB_composition_layer_alpha_blend
+  openxrExtensionStrings: XR_FB_passthrough
   company: Unity Technologies
   priority: 0
   required: 0
@@ -1287,12 +1287,12 @@ MonoBehaviour:
   - {fileID: 7497383018830012468}
   - {fileID: -6437608635615804584}
   - {fileID: -1025905340561916859}
-  - {fileID: 1409575555154228534}
-  - {fileID: 7563124520776219742}
+  - {fileID: -5883651887148789007}
+  - {fileID: -9158263212284301082}
   - {fileID: -2203309040565481515}
-  - {fileID: -2869731202771628586}
+  - {fileID: -8776083830351833173}
   - {fileID: 3243487182232361114}
-  - {fileID: 6609416593052356030}
+  - {fileID: 624869861315048294}
   - {fileID: -3884623058556172510}
   - {fileID: -5190053797094401786}
   - {fileID: -6078868055869984845}
