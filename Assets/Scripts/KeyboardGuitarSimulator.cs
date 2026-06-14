@@ -16,6 +16,8 @@ public class KeyboardGuitarSimulator : MonoBehaviour
     
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
+
         keyboard = Keyboard.current;
         if (keyboard == null)
         {

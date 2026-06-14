@@ -1,23 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 
-public class SceneTransitionVR : MonoBehaviour
+public class SceneTransition : MonoBehaviour
 {
-    public string nextSceneName = "cobaltsphereandkepler";
     public AudioClip startSound;
 
+    public Action onStartPressed;
+
     private AudioSource audioSource;
-    private bool hasStarted = false;
+    private bool hasTriggered = false;
+
+    private InputDevice rightController;
 
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
 
-        // Subscribe to device connection events
         InputDevices.deviceConnected += OnDeviceConnected;
     }
 
@@ -26,56 +26,43 @@ public class SceneTransitionVR : MonoBehaviour
         InputDevices.deviceConnected -= OnDeviceConnected;
     }
 
-    // Track right controller
-    private InputDevice rightController;
-    private void OnDeviceConnected(InputDevice device)
+    void OnDeviceConnected(InputDevice device)
     {
         if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) &&
             device.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
         {
             rightController = device;
-            Debug.Log("Right controller connected: " + device.name);
         }
     }
 
     void Update()
     {
-        if (hasStarted)
-            return;
+        if (hasTriggered) return;
 
-        // Ensure we have a controller
         if (!rightController.isValid)
         {
-            // Try to get right controller dynamically
-            var devices = new List<InputDevice>();
-            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller, devices);
+            var devices = new System.Collections.Generic.List<InputDevice>();
+            InputDevices.GetDevicesWithCharacteristics(
+                InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller,
+                devices);
+
             if (devices.Count > 0)
                 rightController = devices[0];
             else
-                return; // no right controller yet
+                return;
         }
 
-        // Check trigger button press (digital)
-        bool triggerPressed = false;
-        if (rightController.TryGetFeatureValue(CommonUsages.triggerButton, out triggerPressed) && triggerPressed)
+        if (rightController.TryGetFeatureValue(CommonUsages.triggerButton, out bool pressed) && pressed)
         {
-            hasStarted = true;
+            hasTriggered = true;
 
             if (startSound != null)
             {
                 audioSource.clip = startSound;
                 audioSource.Play();
-                Invoke(nameof(LoadNextScene), startSound.length);
             }
-            else
-            {
-                LoadNextScene();
-            }
-        }
-    }
 
-    void LoadNextScene()
-    {
-        SceneManager.LoadScene(nextSceneName);
+            onStartPressed?.Invoke();
+        }
     }
 }

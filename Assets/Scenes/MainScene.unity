@@ -590,9 +590,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c8c1a8c28ed7654486cc38f38624712, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chord1Key: 257
-  chord2Key: 258
-  chord3Key: 259
   logInput: 1
 --- !u!4 &811235363
 Transform:
@@ -711,13 +708,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookSpeed: 2
   moveSpeed: 5
-  lookModifierKey: 324
-  forwardKey: 119
-  backKey: 115
-  leftKey: 97
-  rightKey: 100
-  upKey: 113
-  downKey: 101
 --- !u!1001 &1105060302
 PrefabInstance:
   m_ObjectHideFlags: 0

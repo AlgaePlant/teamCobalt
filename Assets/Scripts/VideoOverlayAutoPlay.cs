@@ -1,29 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
+// Uncontrolled version
 public class VideoOverlayAutoPlay : MonoBehaviour
 {
     [Header("Video Settings")]
-    public VideoPlayer videoPlayer;  // Drag your VideoPlayer here
+    public VideoPlayer videoPlayer;
 
     void Start()
     {
         if (videoPlayer == null)
         {
-            Debug.LogError("VideoOverlayAutoPlay: VideoPlayer is not assigned!");
+            Debug.LogError("VideoOverlayAutoPlay: VideoPlayer not assigned");
             return;
         }
 
-        // Play video immediately on scene start
-        videoPlayer.Play();
-        Debug.Log("Video started immediately on scene start.");
-
-        if (SceneManager.GetActiveScene().name == "cobaltpart3" && videoPlayer.clip != null)
-        {
-            SceneManager.LoadScene("cobaltpart4");
-        }
+        Debug.Log("Video ready (controlled by GameIntroFlowController)");
     }
 }
