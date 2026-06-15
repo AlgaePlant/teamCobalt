@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/TitleScreen.unity
+    path: Assets/Scenes/TitleScreen.unity
     guid: b13af2a0c6a62164fad8c6d220d8e14a
   - enabled: 1
     path: Assets/cobaltsphereandkepler.unity
