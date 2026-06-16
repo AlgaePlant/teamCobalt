@@ -1,4 +1,4 @@
-// Assets/Scripts/Editor/BeatmapEditor.cs
+// Assets/Scripts/Utils/BeatmapEditor.cs
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
@@ -36,10 +36,15 @@ public class BeatmapEditor : EditorWindow
         {
             EditorGUILayout.BeginHorizontal();
             
-            notes[i].color = EditorGUILayout.TextField(notes[i].color, GUILayout.Width(80));
-            notes[i].time = EditorGUILayout.FloatField(notes[i].time, GUILayout.Width(60));
-            notes[i].x = EditorGUILayout.FloatField(notes[i].x, GUILayout.Width(60));
-            notes[i].y = EditorGUILayout.FloatField(notes[i].y, GUILayout.Width(60));
+            // 颜色下拉选择
+            string[] colors = { "Yellow", "Green", "BluePurple" };
+            int selectedIndex = System.Array.IndexOf(colors, notes[i].color);
+            if (selectedIndex < 0) selectedIndex = 0;
+            notes[i].color = colors[EditorGUILayout.Popup(selectedIndex, colors, GUILayout.Width(80))];
+            
+            notes[i].beatTime = EditorGUILayout.FloatField(notes[i].beatTime, GUILayout.Width(60));
+            notes[i].xOffset = EditorGUILayout.FloatField(notes[i].xOffset, GUILayout.Width(60));
+            notes[i].yOffset = EditorGUILayout.FloatField(notes[i].yOffset, GUILayout.Width(60));
             
             if (GUILayout.Button("删除", GUILayout.Width(50)))
             {
@@ -54,7 +59,7 @@ public class BeatmapEditor : EditorWindow
         
         if (GUILayout.Button("添加音符"))
         {
-            notes.Add(new NoteData { color = "Yellow", time = 0, x = 0, y = 0 });
+            notes.Add(new NoteData { color = "Yellow", beatTime = 0, xOffset = 0, yOffset = 0 });
         }
     }
     
