@@ -27,7 +27,7 @@ Contribution List:
    - Maksim also contributed a small portion of component code before leaving the project.
 
 * *Lead Developer / Technical Lead*:
-   - Ruoshui
+   - Ruoshui Deng
 
 * *Organization and Communication*:
    - Cerebrum (Yuhong Xu)
