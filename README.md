@@ -17,25 +17,51 @@ This is a VR music game. Players will take on the role of a "Bard" who commands 
 ## ddl
 ddl 是 6/22 前。但我的设想是在 6/17 前基本上完成大部分，后面 6/17-6/22 这 5 天就是反复调试，6/22-6/23 这两天布展。
 
-## 分工
-* *游戏基础框架和故事背景*: Audrey Wong, Cathy Jiao, Elaine Yang, Liz Sun, Maksim Grujic
-* *codes*: Lydia、若水、Chris、Nathan；Maksim（已经离开了，写了一小部分的组件代码。）
-* *Lead Developer / Technical Lead*: 若水(Ruoshui)
-* *组织与沟通*: Cerebrum(Yuhong)
-* *Documentation*: Cerebrum
-* *美术*: 
-   - 角色设计： Liz、Audrey
-   - icons：Yuhan、Elaine、Liz
-* *硬件 controller 调试*: Audrey、Cerebrum
-* 硬件 VR头显 调试: Audrey、Cerebrum
+## Contribution
+Contribution List:
+* *Game Basic Framework and Story Background*:
+   - Audrey Wong, Cathy Jiao, Elaine Yang, Liz Sun, Maksim Grujic
+
+* *Code*:
+   - Lydia Chen, Ruoshui Deng, Chris, Nathan
+   - Maksim also contributed a small portion of component code before leaving the project.
+
+* *Lead Developer / Technical Lead*:
+   - Ruoshui
+
+* *Organization and Communication*:
+   - Cerebrum (Yuhong Xu)
+
+* *Documentation*:
+   - Cerebrum
+
+* *Art*:
+   - Character Design: Liz, Audrey
+   - Icons: Yuhan, Elaine, Liz
+   - assets finding: Liz, Cerebrum, Yuhan
+
+* *Hardware Debugging + Testing*:
+   - Hardware Controller Debugging + Testing: Audrey, Cerebrum
+   - Hardware VR Headset Debugging + Testing: Audrey, Cerebrum
+
 * *Gameplay*:
-   - Core Mechanisims: Lydia, Cerebrum, 若水
-   - 互动与反馈: Lydia, Cerebrum, Yuhan
-* *playtest*：Cerebrum、Audrey
-* *交互细节*:
-  - wireframe：Yuhan
-  - 高保真：Yuhan
-* *Instagram账号发布 (@BARD.0205)*：Liz
-* *周边*: Liz
-* *背景音乐免费音源查找+sound effects*：Elaine、Liz、若水、Cerebrum
-* *玩游戏时的音乐（神秘矿物质 echo）*：[Hate, Birth and Humanity](https://drive.google.com/file/d/1st69JLGYI1PySw4bLM2gq8AjpuDjrCzL/view?usp=drive_link)
+   - Core Mechanisms: Lydia, Cerebrum, Ruoshui
+   - Beatmap / Rhythm Game Chart Design: Lydia
+   - Interaction and Feedback: Lydia, Cerebrum, Yuhan
+
+* *Playtesting*:
+   - Cerebrum, Audrey
+
+* *Interaction Details*:
+   - Wireframe: Yuhan
+   - High-Fidelity Design: Yuhan
+
+* *Instagram Account Posting*:
+   - @BARD.0205: Liz
+
+* *Merchandise*:
+   - Liz
+
+* *Audio*:
+   - Free Background Music Source Research + Sound Effects: Elaine, Liz, Ruoshui, Cerebrum
+   - In-Game Music / The Mysterious Mineral “Echo”: [Hate, Birth and Humanity](https://drive.google.com/file/d/1st69JLGYI1PySw4bLM2gq8AjpuDjrCzL/view?usp=drive_link)
