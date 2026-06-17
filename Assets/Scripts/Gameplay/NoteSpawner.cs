@@ -37,7 +37,6 @@ public class NoteSpawner : MonoBehaviour
         LoadBeatmap();
         musicSource = GetComponent<AudioSource>();
         
-        // ★ 直接开始，没有延迟
         hasStarted = true;
         if (musicSource != null && musicSource.clip != null)
         {
@@ -53,6 +52,8 @@ public class NoteSpawner : MonoBehaviour
     
     void LoadBeatmap()
     {
+        bool loaded = false;
+        
         // 优先使用拖入的 TextAsset
         if (beatmapFile != null)
         {
@@ -61,39 +62,83 @@ public class NoteSpawner : MonoBehaviour
             {
                 notes = beatmap.notes;
                 Debug.Log($"✅ 从 TextAsset 加载谱面成功！共 {notes.Count} 个音符");
-                return;
+                loaded = true;
             }
         }
         
         // 从 StreamingAssets 加载
-        string filePath = Application.streamingAssetsPath + "/beatmap.json";
-        if (System.IO.File.Exists(filePath))
+        if (!loaded)
         {
-            string json = System.IO.File.ReadAllText(filePath);
-            BeatmapData beatmap = JsonUtility.FromJson<BeatmapData>(json);
-            if (beatmap != null && beatmap.notes != null && beatmap.notes.Count > 0)
+            string filePath = Application.streamingAssetsPath + "/beatmap.json";
+            if (System.IO.File.Exists(filePath))
             {
-                notes = beatmap.notes;
-                Debug.Log($"✅ 从 StreamingAssets 加载谱面成功！共 {notes.Count} 个音符");
-                return;
+                string json = System.IO.File.ReadAllText(filePath);
+                BeatmapData beatmap = JsonUtility.FromJson<BeatmapData>(json);
+                if (beatmap != null && beatmap.notes != null && beatmap.notes.Count > 0)
+                {
+                    notes = beatmap.notes;
+                    Debug.Log($"✅ 从 StreamingAssets 加载谱面成功！共 {notes.Count} 个音符");
+                    loaded = true;
+                }
             }
         }
         
         // 从 Resources 加载
-        TextAsset resourceFile = Resources.Load<TextAsset>("beatmap");
-        if (resourceFile != null)
+        if (!loaded)
         {
-            BeatmapData beatmap = JsonUtility.FromJson<BeatmapData>(resourceFile.text);
-            if (beatmap != null && beatmap.notes != null && beatmap.notes.Count > 0)
+            TextAsset resourceFile = Resources.Load<TextAsset>("beatmap");
+            if (resourceFile != null)
             {
-                notes = beatmap.notes;
-                Debug.Log($"✅ 从 Resources 加载谱面成功！共 {notes.Count} 个音符");
-                return;
+                BeatmapData beatmap = JsonUtility.FromJson<BeatmapData>(resourceFile.text);
+                if (beatmap != null && beatmap.notes != null && beatmap.notes.Count > 0)
+                {
+                    notes = beatmap.notes;
+                    Debug.Log($"✅ 从 Resources 加载谱面成功！共 {notes.Count} 个音符");
+                    loaded = true;
+                }
             }
         }
         
-        Debug.LogWarning("⚠️ 没有找到 beatmap.json，使用默认测试数据");
-        CreateTestBeatmap();
+        // 如果都没加载成功，生成测试数据
+        if (!loaded)
+        {
+            Debug.LogWarning("⚠️ 没有找到 beatmap.json，使用默认测试数据");
+            CreateTestBeatmap();
+        }
+        
+        // ★ 关键：无论哪种方式加载，都通知 ScoreManager
+        if (notes.Count > 0)
+        {
+            var totals = CountNotesByColor();
+            
+            if (ScoreManager.Instance != null)
+            {
+                ScoreManager.Instance.SetTotalCounts(totals);
+                Debug.Log($"✅ 通知 ScoreManager：黄色 {totals["Yellow"]} 个，绿色 {totals["Green"]} 个，蓝紫色 {totals["BluePurple"]} 个");
+            }
+            else
+            {
+                Debug.LogWarning("⚠️ ScoreManager.Instance 为空！请确保场景中有 ScoreManager 对象");
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 统计谱面中每种颜色的数量
+    /// </summary>
+    Dictionary<string, int> CountNotesByColor()
+    {
+        var dict = new Dictionary<string, int>();
+        dict["Yellow"] = 0;
+        dict["Green"] = 0;
+        dict["BluePurple"] = 0;
+        
+        foreach (var note in notes)
+        {
+            if (dict.ContainsKey(note.color))
+                dict[note.color]++;
+        }
+        return dict;
     }
     
     void CreateTestBeatmap()
@@ -165,7 +210,7 @@ public class NoteSpawner : MonoBehaviour
         float travelDuration = spawnDistanceZ / moveSpeed;
         note.Initialize(data, targetPosition, travelDuration);
         SetNoteEnumColor(note, data.color);
-
+        
         note.OnCaptured += HandleNoteCaptured;
         note.OnMissed += HandleNoteMissed;
         
@@ -224,31 +269,23 @@ public class NoteSpawner : MonoBehaviour
         OnNoteMissed?.Invoke(data);
         Debug.Log($"💨 错过: {data.color} at {data.beatTime}s");
     }
-    void SetNoteEnumColor(
-    Note note,
-    string color)
+    
+    void SetNoteEnumColor(Note note, string color)
     {
         switch (color)
         {
             case "Yellow":
-                note.noteColor =
-                    NoteColor.Yellow;
+                note.noteColor = NoteColor.Yellow;
                 break;
-
-
             case "Green":
-                note.noteColor =
-                    NoteColor.Green;
+                note.noteColor = NoteColor.Green;
                 break;
-
-
             case "BluePurple":
-                note.noteColor =
-                    NoteColor.BluePurple;
+                note.noteColor = NoteColor.BluePurple;
                 break;
         }
     }
-
+    
     IEnumerator SimulateMusicTime()
     {
         float time = 0;
