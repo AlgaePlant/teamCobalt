@@ -164,7 +164,8 @@ public class NoteSpawner : MonoBehaviour
         
         float travelDuration = spawnDistanceZ / moveSpeed;
         note.Initialize(data, targetPosition, travelDuration);
-        
+        SetNoteEnumColor(note, data.color);
+
         note.OnCaptured += HandleNoteCaptured;
         note.OnMissed += HandleNoteMissed;
         
@@ -223,7 +224,31 @@ public class NoteSpawner : MonoBehaviour
         OnNoteMissed?.Invoke(data);
         Debug.Log($"💨 错过: {data.color} at {data.beatTime}s");
     }
-    
+    void SetNoteEnumColor(
+    Note note,
+    string color)
+    {
+        switch (color)
+        {
+            case "Yellow":
+                note.noteColor =
+                    NoteColor.Yellow;
+                break;
+
+
+            case "Green":
+                note.noteColor =
+                    NoteColor.Green;
+                break;
+
+
+            case "BluePurple":
+                note.noteColor =
+                    NoteColor.BluePurple;
+                break;
+        }
+    }
+
     IEnumerator SimulateMusicTime()
     {
         float time = 0;
