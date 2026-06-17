@@ -115,43 +115,19 @@ public class Note : MonoBehaviour
         if (!isActive || isCaptured)
             return;
 
+        float progress = (Time.time - spawnTime) / travelDuration;
+        progress = Mathf.Clamp01(progress);
 
-        float progress =
-            (Time.time - spawnTime)
-            /
-            travelDuration;
+        transform.position = Vector3.Lerp(startPosition, passPosition, progress);
 
+        float scale = Mathf.Lerp(minScale, maxScale, progress);
+        transform.localScale = Vector3.one * scale;
 
-        progress =
-            Mathf.Clamp01(progress);
-
-
-
-        transform.position =
-            Vector3.Lerp(
-                startPosition,
-                passPosition,
-                progress
-            );
-
-
-
-        float scale =
-            Mathf.Lerp(
-                minScale,
-                maxScale,
-                progress
-            );
-
-
-        transform.localScale =
-            Vector3.one * scale;
-
-
+        // ★ 恢复旋转
+        transform.Rotate(Vector3.up, 30f * Time.deltaTime);
+        transform.Rotate(Vector3.right, 20f * Time.deltaTime);
 
         UpdateReadyGlow();
-
-
 
         if (progress >= 1f)
         {
@@ -170,7 +146,7 @@ public class Note : MonoBehaviour
             glowing = true;
             SetGlow(readyGlow);
         }
-        else if (!IsInHitRange() && glowing)
+        else if (!IsInHitRange() && !glowing) // ★ 只有当之前没有发光时才恢复正常发光
         {
             glowing = false;
             SetGlow(normalGlow);
@@ -267,14 +243,15 @@ public class Note : MonoBehaviour
         if (prefab == null)
             return;
 
+        GameObject obj = Instantiate(prefab, transform.position, Quaternion.identity);
 
-        GameObject obj =
-            Instantiate(
-                prefab,
-                transform.position,
-                Quaternion.identity
-            );
-
+        // ★ 强制所有特效都变为 0.5 倍速（不管命中还是未命中）
+        ParticleSystem[] systems = obj.GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem ps in systems)
+        {
+            var main = ps.main;
+            main.simulationSpeed = 0.25f;
+        }
 
         Destroy(obj, 4f);
     }
@@ -288,31 +265,18 @@ public class Note : MonoBehaviour
         if (materials == null)
             return;
 
-
         for (int i = 0; i < materials.Length; i++)
         {
-            Material mat =
-                materials[i];
-
+            Material mat = materials[i];
 
             mat.EnableKeyword("_EMISSION");
 
+            // ★ 用白色发光，而不是用 originalColors[i]
+            Color emission = Color.white * intensity;
+            mat.SetColor("_EmissionColor", emission);
 
-            Color emission =
-                originalColors[i]
-                *
-                intensity;
-
-
-
-            mat.SetColor(
-                "_EmissionColor",
-                emission
-            );
-
-
-            mat.color =
-                originalColors[i];
+            // ★ 不改变基础颜色，保持原来的颜色
+            // mat.color = originalColors[i];  // 注释掉这行
         }
     }
 
