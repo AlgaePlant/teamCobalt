@@ -203,9 +203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425dd2a7298b90b47bdaab7f484859d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatSpeed: 0.5
-  floatAmount: 0.2
-  rotationSpeed: 10
 --- !u!1 &20478001 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8527362242434426454, guid: 8b4d02b4e05af714dab2a12548a310f8, type: 3}
@@ -686,9 +683,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425dd2a7298b90b47bdaab7f484859d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatSpeed: 0.5
-  floatAmount: 0.2
-  rotationSpeed: 10
 --- !u!1 &781150701
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,9 +1071,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425dd2a7298b90b47bdaab7f484859d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatSpeed: 0.5
-  floatAmount: 0.2
-  rotationSpeed: 10
 --- !u!1 &1107677067
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,6 +1101,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logInput: 1
+  OnStringPlayed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1107677069
 Transform:
   m_ObjectHideFlags: 0
@@ -1372,7 +1366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5be40a6a098de4dbb6c97a87ac5d54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: cobaltpart2
+  nextScene: MainScene
   dialogueBGM: {fileID: 1573026749}
   videoPlayer: {fileID: 2042232701}
   dialogueManager: {fileID: 622880744}
@@ -1892,9 +1886,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425dd2a7298b90b47bdaab7f484859d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatSpeed: 0.5
-  floatAmount: 0.2
-  rotationSpeed: 10
 --- !u!1001 &1742994800
 PrefabInstance:
   m_ObjectHideFlags: 0
