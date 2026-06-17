@@ -146,10 +146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa045b01afbce0e419907c7e7a6970e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  noteColor: 0
+  scoreValue: 100
   minScale: 0.15
   maxScale: 1
-  minGlow: 0.05
-  maxGlow: 0.8
+  normalGlow: 1
+  readyGlow: 4
   hitEffectPrefab: {fileID: 4212237911574779972, guid: 1f82bc10d49564a42aef1e83d581f903, type: 3}
   missEffectPrefab: {fileID: 5585671604984661021, guid: 7f3d367fff3f9bb4ead87bc5236f6f3d, type: 3}
 --- !u!135 &4298493625283838114
