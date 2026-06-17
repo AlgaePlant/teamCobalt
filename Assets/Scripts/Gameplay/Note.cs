@@ -17,11 +17,10 @@ public class Note : MonoBehaviour
 
     [Header("大小")]
     public float minScale = 0.15f;
-    public float maxScale = 1.0f;
+    public float maxScale = 1f;
 
-    [Header("判定范围发光")]
-    public float normalGlow = 0.2f;
-    public float readyGlow = 2f;
+    [Header("判定增强")]
+    public float activeEmission = 2f;
 
     [Header("特效")]
     public GameObject hitEffectPrefab;
@@ -41,14 +40,12 @@ public class Note : MonoBehaviour
 
     private bool isActive = true;
     private bool isCaptured = false;
+    private bool enhanced = false;
 
 
     private Renderer[] renderers;
     private Material[] materials;
     private Color[] originalColors;
-
-
-    private bool glowing = false;
 
 
     public System.Action<NoteData> OnCaptured;
@@ -74,8 +71,6 @@ public class Note : MonoBehaviour
         startPosition = transform.position;
 
 
-
-        // 找所有子物体Renderer
         renderers =
             GetComponentsInChildren<Renderer>();
 
@@ -89,11 +84,8 @@ public class Note : MonoBehaviour
 
         for (int i = 0; i < renderers.Length; i++)
         {
-            materials[i] =
-                renderers[i].material;
-
-            originalColors[i] =
-                materials[i].color;
+            materials[i] = renderers[i].material;
+            originalColors[i] = materials[i].color;
         }
 
 
@@ -101,12 +93,8 @@ public class Note : MonoBehaviour
             Vector3.one * minScale;
 
 
-        SetGlow(normalGlow);
-
-
         HitManager.Register(this);
     }
-
 
 
 
@@ -122,9 +110,7 @@ public class Note : MonoBehaviour
             travelDuration;
 
 
-        progress =
-            Mathf.Clamp01(progress);
-
+        progress = Mathf.Clamp01(progress);
 
 
         transform.position =
@@ -133,7 +119,6 @@ public class Note : MonoBehaviour
                 passPosition,
                 progress
             );
-
 
 
         float scale =
@@ -148,36 +133,103 @@ public class Note : MonoBehaviour
             Vector3.one * scale;
 
 
-
-        UpdateReadyGlow();
+        UpdateEnhance();
 
 
 
         if (progress >= 1f)
-        {
             MissAndDestroy();
-        }
     }
 
 
 
-
-
-    void UpdateReadyGlow()
+    void UpdateEnhance()
     {
-        if (IsInHitRange() && !glowing)
+        bool ready =
+            GetDistanceToJudgeLine()
+            <= HitManager.hitRange;
+
+
+        if (ready && !enhanced)
         {
-            glowing = true;
-            SetGlow(readyGlow);
+            enhanced = true;
+            ApplyEnhance();
         }
-        else if (!IsInHitRange() && glowing)
+
+
+        if (!ready && enhanced)
         {
-            glowing = false;
-            SetGlow(normalGlow);
+            enhanced = false;
+            RestoreColor();
         }
     }
 
 
+
+    void ApplyEnhance()
+    {
+        Color target =
+            GetStrongColor();
+
+
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i].color =
+                Color.Lerp(
+                    originalColors[i],
+                    target,
+                    0.35f
+                );
+
+
+            materials[i].EnableKeyword("_EMISSION");
+
+
+            materials[i].SetColor(
+                "_EmissionColor",
+                target * activeEmission
+            );
+        }
+    }
+
+
+
+    void RestoreColor()
+    {
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i].color =
+                originalColors[i];
+
+
+            materials[i].SetColor(
+                "_EmissionColor",
+                Color.black
+            );
+        }
+    }
+
+
+
+    Color GetStrongColor()
+    {
+        switch (noteColor)
+        {
+            case NoteColor.Yellow:
+                return new Color(1f, 0.9f, 0f);
+
+
+            case NoteColor.Green:
+                return new Color(0f, 1f, 0.1f);
+
+
+            case NoteColor.BluePurple:
+                return new Color(0.1f, 0.4f, 1f);
+        }
+
+
+        return Color.white;
+    }
 
 
 
@@ -199,7 +251,6 @@ public class Note : MonoBehaviour
             judge.PlayHit();
 
 
-
         OnCaptured?.Invoke(data);
 
 
@@ -211,22 +262,9 @@ public class Note : MonoBehaviour
 
 
 
-
-
     public bool IsActive()
     {
         return isActive && !isCaptured;
-    }
-
-
-
-
-
-    public float GetDistanceToJudgeLine()
-    {
-        return Mathf.Abs(
-            transform.position.z - 10f
-        );
     }
 
 
@@ -237,6 +275,14 @@ public class Note : MonoBehaviour
     }
 
 
+
+    public float GetDistanceToJudgeLine()
+    {
+        return Mathf.Abs(
+            transform.position.z -
+            targetPosition.z
+        );
+    }
 
 
 
@@ -260,8 +306,6 @@ public class Note : MonoBehaviour
 
 
 
-
-
     void PlayEffect(GameObject prefab)
     {
         if (prefab == null)
@@ -278,45 +322,6 @@ public class Note : MonoBehaviour
 
         Destroy(obj, 4f);
     }
-
-
-
-
-
-    void SetGlow(float intensity)
-    {
-        if (materials == null)
-            return;
-
-
-        for (int i = 0; i < materials.Length; i++)
-        {
-            Material mat =
-                materials[i];
-
-
-            mat.EnableKeyword("_EMISSION");
-
-
-            Color emission =
-                originalColors[i]
-                *
-                intensity;
-
-
-
-            mat.SetColor(
-                "_EmissionColor",
-                emission
-            );
-
-
-            mat.color =
-                originalColors[i];
-        }
-    }
-
-
 
 
 

@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class HitManager : MonoBehaviour
 {
-    public static List<Note> Notes = new List<Note>();
+    public static List<Note> Notes =
+        new List<Note>();
 
     public static float hitRange = 3f;
 
