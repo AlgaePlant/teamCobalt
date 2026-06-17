@@ -159,31 +159,18 @@ public class Note : MonoBehaviour
 
     public void Capture()
     {
-        if (!isActive)
-            return;
-
-
+        if (!isActive) return;
+        
         isActive = false;
         isCaptured = true;
-
-
-        JudgeVisual judge =
-            FindObjectOfType<JudgeVisual>();
-
-
-        if (judge != null)
-            judge.PlayHit();
-
-
-
+        
+        // ★ 触发事件（GuitarInputHandler 会通过 NoteSpawner 接收到）
         OnCaptured?.Invoke(data);
-
-
+        
         PlayEffect(hitEffectPrefab);
-
-
         Destroy(gameObject);
     }
+
 
 
 

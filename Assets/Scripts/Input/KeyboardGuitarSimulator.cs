@@ -3,15 +3,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
+// ★ 类名改成 KeyboardGuitarSimulator（不是 GuitarInputHandler）
 public class KeyboardGuitarSimulator : MonoBehaviour
 {
     [Header("调试选项")]
     public bool logInput = true;
     
-    // 改为 UnityEvent，方便 Inspector 拖拽绑定，也方便代码订阅
     public UnityEvent<int> OnStringPlayed;
-    
-    // 保留静态事件供旧代码兼容（可选）
     public static System.Action<int> OnStringPlayedStatic;
     
     private Keyboard keyboard;
@@ -53,25 +51,7 @@ public class KeyboardGuitarSimulator : MonoBehaviour
             Debug.Log($"[吉他输入] 弹奏: {chordNames[chordId]}");
         }
         
-        // 触发 UnityEvent（可在 Inspector 绑定）
         OnStringPlayed?.Invoke(chordId);
-        
-        // 触发静态事件
         OnStringPlayedStatic?.Invoke(chordId);
-    }
-    
-    void OnGUI()
-    {
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 20;
-        style.normal.textColor = Color.white;
-        style.fontStyle = FontStyle.Bold;
-        
-        GUILayout.BeginArea(new Rect(10, 10, 350, 150));
-        GUILayout.Label("=== 键盘吉他模拟器 ===", style);
-        GUILayout.Label("弦1 (矿物): 按数字键 1", style);
-        GUILayout.Label("弦2 (生命): 按数字键 2", style);
-        GUILayout.Label("弦3 (语言): 按数字键 3", style);
-        GUILayout.EndArea();
     }
 }
