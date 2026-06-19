@@ -6,7 +6,7 @@ using UnityEngine.Video;
 
 public class GameIntroFlowController : MonoBehaviour
 {
-    public string nextScene = "cobaltpart2";
+    public string nextScene = "MainScene";
 
     public AudioSource dialogueBGM;
 
@@ -23,16 +23,29 @@ public class GameIntroFlowController : MonoBehaviour
         StartCoroutine(Run());
     }
 
-    void Update()
+    void OnEnable()
     {
-        if (Keyboard.current == null) return;
+        GuitarInputManager.OnStringPlayed += OnGuitarInput;
+    }
 
-        if (Keyboard.current.digit1Key.wasPressedThisFrame)
+
+    void OnDisable()
+    {
+        GuitarInputManager.OnStringPlayed -= OnGuitarInput;
+    }
+
+    void OnGuitarInput(int stringId)
+    {
+        if (stringId == 1)
+        {
             HandlePrimary();
+        }
 
-        if (state == State.Dialogue &&
-            Keyboard.current.digit2Key.wasPressedThisFrame)
+
+        if (state == State.Dialogue && stringId == 2)
+        {
             dialogueManager?.NextManual();
+        }
     }
 
     IEnumerator Run()

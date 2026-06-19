@@ -380,6 +380,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 406137700}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &354568533
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 354568536}
+  - component: {fileID: 354568535}
+  - component: {fileID: 354568534}
+  m_Layer: 0
+  m_Name: GuitarInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &354568534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354568533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ab31cf1c79ba994b9864d4dc43dd8df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &354568535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354568533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db5f6f3aec55dc946ab2055de535ef6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &354568536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354568533}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.53199995, y: 1.3784001, z: 2.33}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &401602624
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,11 +922,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c94e767efb55a4c40b5493c023fef28c, type: 3}
---- !u!1 &1037430606 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1810694187548873690, guid: c94e767efb55a4c40b5493c023fef28c, type: 3}
-  m_PrefabInstance: {fileID: 1037430605}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1069602883
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1671,12 +1723,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mySingularityManager: {fileID: 0}
   DeviceName: 
-  UIInterfacePanel: {fileID: 0}
-  _debugText: {fileID: 0}
-  environment: {fileID: 1553735670}
-  objectToHide: {fileID: 0}
-  spaceshipStatusController: {fileID: 0}
-  touch: 0
 --- !u!1 &1573026747
 GameObject:
   m_ObjectHideFlags: 0
@@ -2356,7 +2402,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1962613466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2371,12 +2417,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mySingularityManager: {fileID: 781150702}
   DeviceName: teamCobalt
-  UIInterfacePanel: {fileID: 1037430606}
-  _debugText: {fileID: 1426950795}
-  environment: {fileID: 0}
-  objectToHide: {fileID: 0}
-  spaceshipStatusController: {fileID: 0}
-  touch: 0
 --- !u!4 &1962613467
 Transform:
   m_ObjectHideFlags: 0
@@ -2782,10 +2822,10 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1962613467}
   - {fileID: 1227559830}
   - {fileID: 1553735671}
   - {fileID: 781150703}
+  - {fileID: 1962613467}
   - {fileID: 401602625}
   - {fileID: 2087237094}
   - {fileID: 1037430605}
@@ -2796,3 +2836,4 @@ SceneRoots:
   - {fileID: 12234690}
   - {fileID: 1420423886}
   - {fileID: 1107677069}
+  - {fileID: 354568536}
