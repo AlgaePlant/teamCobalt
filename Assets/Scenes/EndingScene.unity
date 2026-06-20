@@ -406,7 +406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &354568534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,13 +414,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 354568533}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ab31cf1c79ba994b9864d4dc43dd8df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipCount: 10
-  skipTimeWindow: 2
+  mainSceneName: MainScene
   skipSceneName: EndingScene
 --- !u!114 &354568535
 MonoBehaviour:
@@ -1352,8 +1351,6 @@ MonoBehaviour:
   videoPlayer: {fileID: 2042232701}
   renderTexture: {fileID: 8400000, guid: b10d9ad16727d9d4bbbd626701256b45, type: 2}
   videoDisplay: {fileID: 949768042}
-  skipCount: 5
-  skipTimeWindow: 2
   videoDuration: 30
 --- !u!1 &1426950794
 GameObject:
@@ -1372,7 +1369,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1426950795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1871,7 +1868,8 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6073211988089659431, guid: 9c5a2700409595f4b9522c3e65734df0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2936965886016818456, guid: 9c5a2700409595f4b9522c3e65734df0, type: 3}

@@ -473,9 +473,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainSceneName: TitleScreen
   promptText: {fileID: 399785160}
-  fadeInDuration: 1.5
+  fadeInDuration: 0
   pulseSpeed: 1.2
-  glowIntensity: 2
+  glowIntensity: 10
 --- !u!4 &788350988
 Transform:
   m_ObjectHideFlags: 0

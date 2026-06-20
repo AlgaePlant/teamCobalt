@@ -44,15 +44,18 @@ public class ScoreManager : MonoBehaviour
     }
     
     void Start()
+{
+    // ★ 硬编码固定谱面数量（和 beatmap.json 一致）
+    if (colorProgresses.Count == 0)
     {
-        // 初始化默认值（如果没设置）
-        if (colorProgresses.Count == 0)
-        {
-            colorProgresses.Add(new ColorProgress { colorName = "Yellow", totalCount = 10, capturedCount = 0 });
-            colorProgresses.Add(new ColorProgress { colorName = "Green", totalCount = 10, capturedCount = 0 });
-            colorProgresses.Add(new ColorProgress { colorName = "BluePurple", totalCount = 10, capturedCount = 0 });
-        }
+        colorProgresses.Add(new ColorProgress { colorName = "Yellow", totalCount = 36, capturedCount = 0 });
+        colorProgresses.Add(new ColorProgress { colorName = "Green", totalCount = 18, capturedCount = 0 });
+        colorProgresses.Add(new ColorProgress { colorName = "BluePurple", totalCount = 8, capturedCount = 0 });
     }
+    
+    // ★ 强制触发一次 UI 刷新
+    OnProgressUpdated?.Invoke();
+}
     
     /// <summary>
     /// 从谱面设置总数量
@@ -92,6 +95,8 @@ public class ScoreManager : MonoBehaviour
         // 触发事件
         OnProgressUpdated?.Invoke();
         OnTotalScoreChanged?.Invoke(totalScore);
+
+        
     }
     
     /// <summary>

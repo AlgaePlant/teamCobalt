@@ -461,6 +461,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 477723899474459216, guid: 9c5a2700409595f4b9522c3e65734df0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1816160107069218157, guid: 9c5a2700409595f4b9522c3e65734df0, type: 3}
       propertyPath: m_BackGroundColor.a
       value: 1
@@ -480,6 +484,10 @@ PrefabInstance:
     - target: {fileID: 1962679227806804332, guid: 9c5a2700409595f4b9522c3e65734df0, type: 3}
       propertyPath: m_Name
       value: XR Origin (VR Rig)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3814695895251355540, guid: 9c5a2700409595f4b9522c3e65734df0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6799491930454407345, guid: 9c5a2700409595f4b9522c3e65734df0, type: 3}
       propertyPath: m_CurrentTrackingState
@@ -644,7 +652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6ad5a7ad3b3e644fa31c4a9bbe70672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lookSpeed: 1.2
+  lookSpeed: 0.8
 --- !u!1 &257810521
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,8 +1499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab31cf1c79ba994b9864d4dc43dd8df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipCount: 10
-  skipTimeWindow: 2
+  mainSceneName: MainScene
   skipSceneName: EndingScene
 --- !u!1 &565227511
 GameObject:

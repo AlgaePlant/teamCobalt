@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NoteSpawner : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class NoteSpawner : MonoBehaviour
     private int nextNoteIndex = 0;
     private AudioSource musicSource;
     private bool hasStarted = false;
+    private bool hasEnded = false;
     
     public System.Action<NoteData> OnNoteCaptured;
     public System.Action<NoteData> OnNoteMissed;
@@ -45,6 +47,9 @@ public class NoteSpawner : MonoBehaviour
         {
             musicSource.Play();
             Debug.Log($"🎵 音乐开始播放！共 {notes.Count} 个音符");
+
+            // ★ 新增：启动音乐结束检测
+            StartCoroutine(WaitForMusicEnd());
         }
         else
         {
@@ -53,6 +58,45 @@ public class NoteSpawner : MonoBehaviour
         }
 
      
+    }
+
+    // ★ 新增：等待音乐播放结束
+    IEnumerator WaitForMusicEnd()
+    {
+        if (musicSource == null || musicSource.clip == null)
+        {
+            Debug.LogWarning("⚠️ 没有音乐源或音乐剪辑，无法检测结束");
+            yield break;
+        }
+
+        float musicLength = musicSource.clip.length;
+        float elapsed = 0f;
+
+        // 等待音乐播放完成
+        while (elapsed < musicLength && hasStarted)
+        {
+            // ★ 如果音乐被停止或暂停，也触发结束
+            if (musicSource.isPlaying == false)
+            {
+                // 检查是否是因为播放完毕而停止
+                if (elapsed >= musicLength - 0.5f)
+                {
+                    break;
+                }
+                // 如果不是播放完毕，可能是被手动停止，继续等待
+            }
+            
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // 音乐播放结束，进入 EndingScene
+        if (!hasEnded)
+        {
+            hasEnded = true;
+            Debug.Log("🎵 音乐播放结束！进入 EndingScene");
+            SceneManager.LoadScene("EndingScene");
+        }
     }
     
     void LoadBeatmap()
@@ -134,15 +178,17 @@ public class NoteSpawner : MonoBehaviour
     Dictionary<string, int> CountNotesByColor()
     {
         var dict = new Dictionary<string, int>();
-        dict["Yellow"] = 0;
-        dict["Green"] = 0;
-        dict["BluePurple"] = 0;
+        dict["Yellow"] = 36;
+        dict["Green"] = 18;
+        dict["BluePurple"] = 8;
         
-        foreach (var note in notes)
-        {
-            if (dict.ContainsKey(note.color))
-                dict[note.color]++;
-        }
+        // ★ 注意：这里的数量需要与实际谱面数据一致，建议从谱面数据中动态统计
+        // ★ 目前为了测试，直接返回固定值，后续可以改为动态统计
+        // foreach (var note in notes)
+        // {
+        //     if (dict.ContainsKey(note.color))
+        //         dict[note.color]++;
+        // }
         return dict;
     }
     

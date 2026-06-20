@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     public Color greenColor = new Color(0.2f, 0.8f, 0.2f);   // #33CC33
     public Color bluePurpleColor = new Color(0.5f, 0.2f, 1f); // #8033FF
     
+    // UIManager.cs
     void Awake()
     {
         if (Instance == null)
@@ -31,25 +32,32 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-    
-    void Start()
-    {
-        // 订阅 ScoreManager 事件
+        
+        // ★ 在 Awake 中订阅（比 Start 更早）
         if (ScoreManager.Instance != null)
         {
             ScoreManager.Instance.OnProgressUpdated += RefreshAllUI;
             ScoreManager.Instance.OnTotalScoreChanged += UpdateTotalScore;
-            
-            // 初始化 UI
-            RefreshAllUI();
-            UpdateTotalScore(0);
         }
-        
-        // 设置颜色
+    }
+    
+    void Start()
+    {
+        // ★ 设置颜色（保持不变）
         if (yellowProgressBar != null) yellowProgressBar.SetColor(yellowColor);
         if (greenProgressBar != null) greenProgressBar.SetColor(greenColor);
         if (bluePurpleProgressBar != null) bluePurpleProgressBar.SetColor(bluePurpleColor);
+        
+        // ★ 订阅事件
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.OnProgressUpdated += RefreshAllUI;
+            ScoreManager.Instance.OnTotalScoreChanged += UpdateTotalScore;
+        }
+        
+        // ★ 强制刷新 UI（不管数据从哪里来）
+        RefreshAllUI();
+        UpdateTotalScore(0);
     }
     
     /// <summary>

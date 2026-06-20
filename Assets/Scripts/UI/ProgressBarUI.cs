@@ -17,7 +17,7 @@ public class ProgressBarUI : MonoBehaviour
     void Start()
     {
         // 初始显示
-        UpdateProgress(0, 10);
+        UpdateProgress(0, 36); // 默认值，实际会在 ScoreManager 中更新
     }
     
     /// <summary>
