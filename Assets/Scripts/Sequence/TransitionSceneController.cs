@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class TransitionSceneController : MonoBehaviour
 {
     [Header("场景设置")]
-    public string mainSceneName = "MainScene";
+    public string mainSceneName = "TitleScreen";
     
     [Header("UI 文字")]
     public TextMeshProUGUI promptText;

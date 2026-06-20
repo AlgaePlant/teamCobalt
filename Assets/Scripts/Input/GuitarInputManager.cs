@@ -1,12 +1,12 @@
 ﻿// Assets/Scripts/Gameplay/GuitarInputManager.cs
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;  // ★ 添加这一行
 
 public class GuitarInputManager : MonoBehaviour
 {
     public static GuitarInputManager Instance;
     
-    // 游戏逻辑订阅这个事件
     public static event Action<int> OnStringPlayed;
     
     [Header("快速跳过设置")]
@@ -33,6 +33,9 @@ public class GuitarInputManager : MonoBehaviour
     {
         KeyboardGuitarSimulator.OnStringPlayedStatic += HandleInput;
         GuitarBluetoothInput.OnStringPlayed += HandleInput;
+        // ★ 每次对象激活时重置（包括场景切换后）
+        ResetSkip();
+        
     }
     
     void OnDisable()
@@ -45,13 +48,17 @@ public class GuitarInputManager : MonoBehaviour
     {
         Debug.Log($"🎸 GuitarInputManager 收到弦 {stringId}");
         
-        // 转发事件给游戏逻辑（WindBladeShooter 会订阅）
         OnStringPlayed?.Invoke(stringId);
         
-        // ★ 快速跳过检测（仅检测弦1）
+        // ★ 只在 MainScene 中检测快速跳过（防止和 EndingScene 冲突）
         if (stringId == 1 && !skipTriggered)
         {
-            CheckSkipCondition();
+            string currentScene = SceneManager.GetActiveScene().name;
+            // 只在 MainScene 或 GameScene 中触发跳过
+            if (currentScene == "MainScene" || currentScene == "GameScene")
+            {
+                CheckSkipCondition();
+            }
         }
     }
     
@@ -81,7 +88,7 @@ public class GuitarInputManager : MonoBehaviour
         skipTriggered = true;
         
         Debug.Log($"⏭️ 快速跳过已触发！连按 {skipCount} 次弦1，跳转到 {skipSceneName}");
-        UnityEngine.SceneManagement.SceneManager.LoadScene(skipSceneName);
+        SceneManager.LoadScene(skipSceneName);
     }
     
     public void ResetSkip()

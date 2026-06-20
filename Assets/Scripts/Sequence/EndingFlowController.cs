@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;  // ★ 添加这一行（Keyboard 需要）
 
 public class EndingFlowController : MonoBehaviour
 {
@@ -32,10 +31,12 @@ public class EndingFlowController : MonoBehaviour
     
     void Start()
     {
+        // ★ 订阅吉他输入
         GuitarInputManager.OnStringPlayed += OnGuitarInput;
         
         if (videoPlayer != null)
         {
+            // ★ 如果使用 RenderTexture
             if (renderTexture != null)
             {
                 videoPlayer.targetTexture = renderTexture;
@@ -44,6 +45,21 @@ public class EndingFlowController : MonoBehaviour
                 {
                     videoDisplay.texture = renderTexture;
                     videoDisplay.enabled = true;
+                }
+                Debug.Log("✅ Ending VideoPlayer 已连接到 RenderTexture");
+            }
+            else
+            {
+                // ★ 备用方案：直接连接到 Camera
+                Camera vrCamera = FindObjectOfType<Camera>();
+                if (vrCamera != null)
+                {
+                    videoPlayer.targetCamera = vrCamera;
+                    Debug.Log("✅ Ending VideoPlayer 已连接到相机: " + vrCamera.name);
+                }
+                else
+                {
+                    Debug.LogWarning("⚠️ 未找到任何 Camera，视频可能无法显示！");
                 }
             }
             
@@ -83,7 +99,8 @@ public class EndingFlowController : MonoBehaviour
         {
             if (videoPlayer != null)
             {
-                // ★ 修复1：检查播放是否结束
+                long frameCount = (long)videoPlayer.frameCount;
+                
                 if (videoPlayer.isPlaying == false && videoPlayer.frame > 0)
                 {
                     Debug.Log("✅ 视频播放结束");
@@ -91,8 +108,6 @@ public class EndingFlowController : MonoBehaviour
                     yield break;
                 }
                 
-                // ★ 修复2：检查是否接近最后一帧（显式转换为 long）
-                long frameCount = (long)videoPlayer.frameCount;
                 if (frameCount > 0 && videoPlayer.frame >= frameCount - 2)
                 {
                     Debug.Log("✅ 视频播放到最后一帧");
@@ -163,14 +178,10 @@ public class EndingFlowController : MonoBehaviour
     
     void Update()
     {
-        // ★ 修复3：用 Input.anyKeyDown 替代 Keyboard.current（不需要额外 using）
-        if (Input.anyKeyDown && state == State.Playing)
+        // ★ 键盘 ESC 跳过（用于测试）
+        if (state == State.Playing && Input.GetKeyDown(KeyCode.Escape))
         {
-            // 检查是否是 ESC 键
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                SkipVideo();
-            }
+            SkipVideo();
         }
     }
     

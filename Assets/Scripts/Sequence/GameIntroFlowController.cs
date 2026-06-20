@@ -19,6 +19,21 @@ public class GameIntroFlowController : MonoBehaviour
 
     void Start()
     {
+            if (state == 0) // 如果 state 还是默认值，说明 OnEnable 没被执行
+        {
+            Debug.Log("⚠️ Start() 作为后备触发了初始化");
+            OnEnable();
+        }
+    }
+
+    void OnEnable()
+    {
+        Debug.Log("🎬 GameIntroFlowController.OnEnable() 被调用");
+        
+        // ★ 订阅输入事件
+        GuitarInputManager.OnStringPlayed += OnGuitarInput;
+        
+        // ★ 重置状态并开始流程
         if (dialogueManager != null)
             dialogueManager.panel?.SetActive(false);
 
@@ -26,15 +41,13 @@ public class GameIntroFlowController : MonoBehaviour
         StartCoroutine(Run());
     }
 
-    void OnEnable()
-    {
-        GuitarInputManager.OnStringPlayed += OnGuitarInput;
-    }
-
-
     void OnDisable()
     {
+        // ★ 取消订阅，防止内存泄漏
         GuitarInputManager.OnStringPlayed -= OnGuitarInput;
+        
+        // ★ 停止所有协程，防止残留
+        StopAllCoroutines();
     }
 
     void OnGuitarInput(int stringId)
@@ -43,7 +56,6 @@ public class GameIntroFlowController : MonoBehaviour
         {
             HandlePrimary();
         }
-
 
         if (state == State.Dialogue && stringId == 2)
         {
@@ -70,7 +82,21 @@ public class GameIntroFlowController : MonoBehaviour
         }
 
         if (videoPlayer != null)
+        {
+            // ★ 自动连接到跨场景的 VR Camera
+            Camera vrCamera = FindObjectOfType<Camera>();
+            if (vrCamera != null)
+            {
+                videoPlayer.targetCamera = vrCamera;
+                Debug.Log("✅ Intro VideoPlayer 已连接到相机: " + vrCamera.name);
+            }
+            else
+            {
+                Debug.LogWarning("⚠️ 未找到任何 Camera，视频可能无法显示！");
+            }
+            
             videoPlayer.Play();
+        }
 
         StartCoroutine(VideoAutoEnd());
     }

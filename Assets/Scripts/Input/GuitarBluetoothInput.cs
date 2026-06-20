@@ -49,11 +49,16 @@ public class GuitarBluetoothInput : MonoBehaviour
         //------------------------------------------------
 
         if (lastS1 == 1 && s1 == 0)
+    {
+        Debug.Log("String1");
+        OnStringPlayed?.Invoke(1);
+        
+        // 增加计数器
+        if (StringCounter.Instance != null)
         {
-            Debug.Log("String1");
-
-            OnStringPlayed?.Invoke(1);
+            StringCounter.Instance.AddPress();
         }
+    }
 
         //------------------------------------------------
         // String 2

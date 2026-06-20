@@ -51,6 +51,8 @@ public class NoteSpawner : MonoBehaviour
             Debug.Log("⚠️ 没有音乐文件，使用时间模拟");
             StartCoroutine(SimulateMusicTime());
         }
+
+     
     }
     
     void LoadBeatmap()
