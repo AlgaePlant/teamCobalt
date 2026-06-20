@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
@@ -10,6 +10,8 @@ public class GameIntroFlowController : MonoBehaviour
 
     public AudioSource dialogueBGM;
 
+    public RawImage introVideoImage;
+
     public VideoPlayer videoPlayer;
 
     public DialogueManager dialogueManager;
@@ -17,14 +19,6 @@ public class GameIntroFlowController : MonoBehaviour
     private enum State { Video, Dialogue, End }
     private State state;
 
-    void Start()
-    {
-            if (state == 0) // 如果 state 还是默认值，说明 OnEnable 没被执行
-        {
-            Debug.Log("⚠️ Start() 作为后备触发了初始化");
-            OnEnable();
-        }
-    }
 
     void OnEnable()
     {
@@ -52,10 +46,17 @@ public class GameIntroFlowController : MonoBehaviour
 
     void OnGuitarInput(int stringId)
     {
+        // 只允许视频/对话流程内部处理
+        if (state != State.Video &&
+            state != State.Dialogue)
+            return;
+
+
         if (stringId == 1)
         {
             HandlePrimary();
         }
+
 
         if (state == State.Dialogue && stringId == 2)
         {
@@ -76,27 +77,14 @@ public class GameIntroFlowController : MonoBehaviour
     {
         state = State.Video;
 
+        if (introVideoImage != null)
+            introVideoImage.enabled = true;
+
         if (dialogueManager != null)
-        {
             dialogueManager.panel?.SetActive(false);
-        }
 
         if (videoPlayer != null)
-        {
-            // ★ 自动连接到跨场景的 VR Camera
-            Camera vrCamera = FindObjectOfType<Camera>();
-            if (vrCamera != null)
-            {
-                videoPlayer.targetCamera = vrCamera;
-                Debug.Log("✅ Intro VideoPlayer 已连接到相机: " + vrCamera.name);
-            }
-            else
-            {
-                Debug.LogWarning("⚠️ 未找到任何 Camera，视频可能无法显示！");
-            }
-            
             videoPlayer.Play();
-        }
 
         StartCoroutine(VideoAutoEnd());
     }
@@ -112,7 +100,14 @@ public class GameIntroFlowController : MonoBehaviour
 
     void EndVideoToDialogue()
     {
-        videoPlayer?.Stop();
+        if (state != State.Video)
+            return;
+
+        if (videoPlayer != null)
+            videoPlayer.Stop();
+
+        if (introVideoImage != null)
+            introVideoImage.enabled = false;
 
         StartDialogue();
     }
@@ -172,8 +167,22 @@ public class GameIntroFlowController : MonoBehaviour
     {
         state = State.End;
 
+
         if (dialogueBGM != null)
             dialogueBGM.Stop();
+
+
+
+        if (dialogueManager != null)
+        {
+            if (dialogueManager.panel != null)
+                dialogueManager.panel.SetActive(false);
+
+
+            dialogueManager.gameObject.SetActive(false);
+        }
+
+
 
         SceneManager.LoadScene(nextScene);
     }

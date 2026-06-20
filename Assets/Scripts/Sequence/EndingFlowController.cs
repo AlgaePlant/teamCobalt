@@ -46,7 +46,7 @@ public class EndingFlowController : MonoBehaviour
                     videoDisplay.texture = renderTexture;
                     videoDisplay.enabled = true;
                 }
-                Debug.Log("✅ Ending VideoPlayer 已连接到 RenderTexture");
+                Debug.Log("Ending VideoPlayer 已连接到 RenderTexture");
             }
             else
             {
@@ -55,11 +55,11 @@ public class EndingFlowController : MonoBehaviour
                 if (vrCamera != null)
                 {
                     videoPlayer.targetCamera = vrCamera;
-                    Debug.Log("✅ Ending VideoPlayer 已连接到相机: " + vrCamera.name);
+                    Debug.Log("Ending VideoPlayer 已连接到相机: " + vrCamera.name);
                 }
                 else
                 {
-                    Debug.LogWarning("⚠️ 未找到任何 Camera，视频可能无法显示！");
+                    Debug.LogWarning("未找到任何 Camera，视频可能无法显示！");
                 }
             }
             
@@ -69,10 +69,10 @@ public class EndingFlowController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("❌ EndingFlowController: 没有 VideoPlayer！");
+            Debug.LogError("EndingFlowController: 没有 VideoPlayer！");
         }
         
-        Debug.Log("🎬 Ending 场景已加载");
+        Debug.Log(" Ending 场景已加载");
     }
     
     IEnumerator WaitForVideoReady()
@@ -81,14 +81,14 @@ public class EndingFlowController : MonoBehaviour
         
         if (videoPlayer != null && !videoPlayer.isPlaying)
         {
-            Debug.Log("⏰ 视频准备超时，尝试强制播放");
+            Debug.Log("视频准备超时，尝试强制播放");
             videoPlayer.Play();
         }
     }
     
     void OnVideoPrepared(VideoPlayer vp)
     {
-        Debug.Log("✅ 视频准备完成，开始播放");
+        Debug.Log("视频准备完成，开始播放");
         vp.Play();
         StartCoroutine(MonitorVideoEnd());
     }
@@ -103,14 +103,14 @@ public class EndingFlowController : MonoBehaviour
                 
                 if (videoPlayer.isPlaying == false && videoPlayer.frame > 0)
                 {
-                    Debug.Log("✅ 视频播放结束");
+                    Debug.Log("视频播放结束");
                     OnVideoFinished();
                     yield break;
                 }
                 
                 if (frameCount > 0 && videoPlayer.frame >= frameCount - 2)
                 {
-                    Debug.Log("✅ 视频播放到最后一帧");
+                    Debug.Log("视频播放到最后一帧");
                     yield return new WaitForSeconds(0.5f);
                     OnVideoFinished();
                     yield break;
@@ -143,7 +143,7 @@ public class EndingFlowController : MonoBehaviour
         chord1Count++;
         lastChord1Time = currentTime;
         
-        Debug.Log($"🔢 弦1 快速点击: {chord1Count}/{skipCount}");
+        Debug.Log($"弦1 快速点击: {chord1Count}/{skipCount}");
         
         if (chord1Count >= skipCount)
         {
@@ -157,7 +157,7 @@ public class EndingFlowController : MonoBehaviour
         skipTriggered = true;
         state = State.Skipping;
         
-        Debug.Log($"⏭️ 快速跳过视频！连按 {skipCount} 次弦1");
+        Debug.Log($"快速跳过视频！连按 {skipCount} 次弦1");
         
         if (videoPlayer != null && videoPlayer.isPlaying)
         {
@@ -169,10 +169,15 @@ public class EndingFlowController : MonoBehaviour
     
     void OnVideoFinished()
     {
+        if (videoDisplay != null)
+        {
+            videoDisplay.enabled = false;
+        }
+
         if (state == State.Done) return;
         state = State.Done;
         
-        Debug.Log("🎬 Ending 视频结束，跳转到中转场景");
+        Debug.Log("Ending 视频结束，跳转到中转场景");
         SceneManager.LoadScene(transitionSceneName);
     }
     
@@ -184,14 +189,14 @@ public class EndingFlowController : MonoBehaviour
             SkipVideo();
         }
     }
-    
+
+    void OnDisable()
+    {
+        GuitarInputManager.OnStringPlayed -= OnGuitarInput;
+    }
+
     void OnDestroy()
     {
         GuitarInputManager.OnStringPlayed -= OnGuitarInput;
-        
-        if (videoPlayer != null)
-        {
-            videoPlayer.prepareCompleted -= OnVideoPrepared;
-        }
     }
 }

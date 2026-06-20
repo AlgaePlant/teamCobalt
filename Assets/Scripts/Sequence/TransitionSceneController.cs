@@ -41,7 +41,7 @@ public class TransitionSceneController : MonoBehaviour
         // 开始淡入动画
         StartCoroutine(FadeInAndPulse());
         
-        Debug.Log("🌉 中转场景已加载，等待玩家拨弦...");
+        Debug.Log("中转场景已加载，等待玩家拨弦...");
     }
     
     IEnumerator FadeInAndPulse()
@@ -128,7 +128,7 @@ public class TransitionSceneController : MonoBehaviour
         if (hasStarted) return;
         hasStarted = true;
         
-        Debug.Log("🎸 玩家拨弦！进入 MainScene");
+        Debug.Log("玩家拨弦！进入TitleScreen");
         
         // 播放点击反馈（可选）
         StartCoroutine(FadeOutAndLoad());

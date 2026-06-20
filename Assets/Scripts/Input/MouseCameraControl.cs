@@ -42,7 +42,7 @@ public class MouseCameraControl : MonoBehaviour
             rotationX -= delta.y * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -90f, 90f);
             rotationY += delta.x * lookSpeed;
-            transform.localRotation = Quaternion.Euler(rotationX, rotationY, 0f);
+            transform.rotation = Quaternion.Euler(0, rotationY, 0);
         }
         
         // 只有 WASD 移动（删除了 Q/E）
