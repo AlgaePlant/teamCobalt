@@ -64,7 +64,7 @@ public class Note : MonoBehaviour
 
         passPosition =
             targetPosition -
-            Vector3.forward * 15f;
+            Vector3.forward * 5f;
 
 
         travelDuration = duration;
@@ -204,7 +204,7 @@ public class Note : MonoBehaviour
     public float GetDistanceToJudgeLine()
     {
         return Mathf.Abs(
-            transform.position.z - 10f
+            transform.position.z - 15f
         );
     }
 

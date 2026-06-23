@@ -1,10 +1,8 @@
-// Assets/Scripts/Sequence/EndingFlowController.cs
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;  // ★ 添加这一行（Keyboard 需要）
 
 public class EndingFlowController : MonoBehaviour
 {
@@ -16,63 +14,95 @@ public class EndingFlowController : MonoBehaviour
     public RenderTexture renderTexture;
     public RawImage videoDisplay;
     
-    [Header("跳过设置")]
-    public int skipCount = 5;
-    public float skipTimeWindow = 2f;
-    
     [Header("备用设置")]
     public float videoDuration = 30f;
     
-    private enum State { Playing, Skipping, Done }
+    private enum State { Playing, Done }
     private State state = State.Playing;
-    
-    private int chord1Count = 0;
-    private float lastChord1Time = 0f;
     private bool skipTriggered = false;
     
     void Start()
     {
+        // ★ 订阅吉他输入（用于按 1 跳过）
         GuitarInputManager.OnStringPlayed += OnGuitarInput;
         
-        if (videoPlayer != null)
+        SetupVideo();
+        Debug.Log("🎬 Ending 场景已加载");
+    }
+    
+    void SetupVideo()
+    {
+        if (videoPlayer == null) return;
+        
+        if (renderTexture != null)
         {
-            if (renderTexture != null)
+            videoPlayer.targetTexture = renderTexture;
+            if (videoDisplay != null)
             {
-                videoPlayer.targetTexture = renderTexture;
-                
-                if (videoDisplay != null)
-                {
-                    videoDisplay.texture = renderTexture;
-                    videoDisplay.enabled = true;
-                }
+                videoDisplay.texture = renderTexture;
+                videoDisplay.enabled = true;
             }
-            
-            videoPlayer.Prepare();
-            videoPlayer.prepareCompleted += OnVideoPrepared;
-            StartCoroutine(WaitForVideoReady());
+            Debug.Log("Ending VideoPlayer 已连接到 RenderTexture");
         }
         else
         {
-            Debug.LogError("❌ EndingFlowController: 没有 VideoPlayer！");
+            Camera vrCamera = FindObjectOfType<Camera>();
+            if (vrCamera != null)
+            {
+                videoPlayer.targetCamera = vrCamera;
+                Debug.Log("Ending VideoPlayer 已连接到相机: " + vrCamera.name);
+            }
+            else
+            {
+                Debug.LogWarning("未找到任何 Camera，视频可能无法显示！");
+            }
         }
         
-        Debug.Log("🎬 Ending 场景已加载");
+        videoPlayer.Prepare();
+        videoPlayer.prepareCompleted += OnVideoPrepared;
+        StartCoroutine(WaitForVideoReady());
+    }
+    
+    void OnGuitarInput(int stringId)
+    {
+        if (state == State.Done || skipTriggered) return;
+        
+        // ★ 按 1 跳过视频
+        if (stringId == 1)
+        {
+            SkipVideo();
+        }
+    }
+    
+    void SkipVideo()
+    {
+        if (skipTriggered) return;
+        skipTriggered = true;
+        state = State.Done;
+        
+        Debug.Log("[Ending] 按 1 跳过视频");
+        
+        if (videoPlayer != null && videoPlayer.isPlaying)
+        {
+            videoPlayer.Stop();
+        }
+        
+        OnVideoFinished();
     }
     
     IEnumerator WaitForVideoReady()
     {
         yield return new WaitForSeconds(2f);
-        
         if (videoPlayer != null && !videoPlayer.isPlaying)
         {
-            Debug.Log("⏰ 视频准备超时，尝试强制播放");
+            Debug.Log("视频准备超时，尝试强制播放");
             videoPlayer.Play();
         }
     }
     
     void OnVideoPrepared(VideoPlayer vp)
     {
-        Debug.Log("✅ 视频准备完成，开始播放");
+        Debug.Log("视频准备完成，开始播放");
         vp.Play();
         StartCoroutine(MonitorVideoEnd());
     }
@@ -83,73 +113,25 @@ public class EndingFlowController : MonoBehaviour
         {
             if (videoPlayer != null)
             {
-                // ★ 修复1：检查播放是否结束
+                long frameCount = (long)videoPlayer.frameCount;
+                
                 if (videoPlayer.isPlaying == false && videoPlayer.frame > 0)
                 {
-                    Debug.Log("✅ 视频播放结束");
+                    Debug.Log("视频播放结束");
                     OnVideoFinished();
                     yield break;
                 }
                 
-                // ★ 修复2：检查是否接近最后一帧（显式转换为 long）
-                long frameCount = (long)videoPlayer.frameCount;
                 if (frameCount > 0 && videoPlayer.frame >= frameCount - 2)
                 {
-                    Debug.Log("✅ 视频播放到最后一帧");
+                    Debug.Log("视频播放到最后一帧");
                     yield return new WaitForSeconds(0.5f);
                     OnVideoFinished();
                     yield break;
                 }
             }
-            
             yield return new WaitForSeconds(0.5f);
         }
-    }
-    
-    void OnGuitarInput(int stringId)
-    {
-        if (state == State.Done || skipTriggered) return;
-        
-        if (stringId == 1)
-        {
-            CheckSkipCondition();
-        }
-    }
-    
-    void CheckSkipCondition()
-    {
-        float currentTime = Time.time;
-        
-        if (currentTime - lastChord1Time > skipTimeWindow)
-        {
-            chord1Count = 0;
-        }
-        
-        chord1Count++;
-        lastChord1Time = currentTime;
-        
-        Debug.Log($"🔢 弦1 快速点击: {chord1Count}/{skipCount}");
-        
-        if (chord1Count >= skipCount)
-        {
-            SkipVideo();
-        }
-    }
-    
-    void SkipVideo()
-    {
-        if (skipTriggered) return;
-        skipTriggered = true;
-        state = State.Skipping;
-        
-        Debug.Log($"⏭️ 快速跳过视频！连按 {skipCount} 次弦1");
-        
-        if (videoPlayer != null && videoPlayer.isPlaying)
-        {
-            videoPlayer.Stop();
-        }
-        
-        OnVideoFinished();
     }
     
     void OnVideoFinished()
@@ -157,30 +139,31 @@ public class EndingFlowController : MonoBehaviour
         if (state == State.Done) return;
         state = State.Done;
         
-        Debug.Log("🎬 Ending 视频结束，跳转到中转场景");
+        if (videoDisplay != null)
+        {
+            videoDisplay.enabled = false;
+        }
+        
+        Debug.Log("Ending 视频结束，跳转到中转场景");
         SceneManager.LoadScene(transitionSceneName);
     }
     
     void Update()
     {
-        // ★ 修复3：用 Input.anyKeyDown 替代 Keyboard.current（不需要额外 using）
-        if (Input.anyKeyDown && state == State.Playing)
+        // ★ 键盘 ESC 也支持跳过（方便测试）
+        if (state == State.Playing && Input.GetKeyDown(KeyCode.Escape))
         {
-            // 检查是否是 ESC 键
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                SkipVideo();
-            }
+            SkipVideo();
         }
     }
-    
+
+    void OnDisable()
+    {
+        GuitarInputManager.OnStringPlayed -= OnGuitarInput;
+    }
+
     void OnDestroy()
     {
         GuitarInputManager.OnStringPlayed -= OnGuitarInput;
-        
-        if (videoPlayer != null)
-        {
-            videoPlayer.prepareCompleted -= OnVideoPrepared;
-        }
     }
 }
